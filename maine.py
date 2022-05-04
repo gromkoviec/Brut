@@ -1,4 +1,4 @@
-from Cracker import Cracker
+from cracker import Cracker
 
 if __name__ == "__main__":
     password_path = "./passw"
