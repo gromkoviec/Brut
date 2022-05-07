@@ -21,7 +21,6 @@ def read_list_from_file(filename):
 username = input("Podaj nazwę użytkownik :")  #test
 if username != "":
     pass
-
 else:
     print("Nazwa użytkownika nie może być pusta:")
 
@@ -39,4 +38,6 @@ for password in paswords:
     try:  # obsługa błedów
         WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.NAME, "uname")))
     except:
-        print("Correct password is ==>" + password + " <==")
+        print("Correct password is ==> " + password + " <==")
+
+driver.close()
