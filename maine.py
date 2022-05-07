@@ -21,14 +21,11 @@ def read_list_from_file(filename):
 username = input("Podaj nazwę użytkownik :")  #test
 if username != "":
     pass
-# print("Podaj nazwę użytkownik :")
-# username = input()
+
 else:
     print("Nazwa użytkownika nie może być pusta:")
 
 passfile = input("Podaj nazwę pliku haseł :") #passw
-# print("Podaj nazwę pliku haseł :")
-# passfile = input()
 
 
 """Osługa strony"""
