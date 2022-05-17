@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support import expected_conditions as EC
+from datetime import datetime
 
 site = input("Podaj adres strony:")
 if site == "test":
@@ -63,7 +64,10 @@ for password in paswords:
     except:
         print("Correct password is ==> " + password + " <==")
 
-file_write = open("ok_password.txt", "w")
-file_write.write("Correct password is ==> " + password + " <==")
+# test_date = datetime.now()
+# test_date_file = datetime.now.strptime("2016-04-15T08:27:18-0500", "%Y-%m-%dT%H-%M-%S%z")
+
+file_write = open("ok_password" + str(test_date_file) + ".txt", "w")
+file_write.write("Test date: " + str(test_date) + " \n Correct password is ==> " + password + " <==")
 
 driver.close()
