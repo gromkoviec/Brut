@@ -64,10 +64,10 @@ for password in paswords:
     except:
         print("Correct password is ==> " + password + " <==")
 
-# test_date = datetime.now()
-# test_date_file = datetime.now.strptime("2016-04-15T08:27:18-0500", "%Y-%m-%dT%H-%M-%S%z")
+test_date = datetime.now()
+test_date_file = datetime.now().strftime("%Y-%m-%d T %H-%M-%S")
 
-file_write = open("ok_password" + str(test_date_file) + ".txt", "w")
+file_write = open("ok_password " + str(test_date_file) + ".txt", "w")
 file_write.write("Test date: " + str(test_date) + " \n Correct password is ==> " + password + " <==")
 
 driver.close()
