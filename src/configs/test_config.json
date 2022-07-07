@@ -4,5 +4,5 @@
   "passwords_file_name": "pass_list.txt",
   "username_selector": "uname",
   "password_selector": "pass",
-  "submit_button_selector": "::wq#content > div:nth-child(1) > form > table > tbody > tr:nth-child(3) > td > input[type=submit]"
+  "submit_button_selector": "#content > div:nth-child(1) > form > table > tbody > tr:nth-child(3) > td > input[type=submit]"
 }
