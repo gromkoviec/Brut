@@ -5,6 +5,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
 from src.config_provider import FileConfigProvider
+from src.parsing import parsing
 from src.password_breaker import PasswordBreaker
 from src.report_generator import ReportGenerator
 
@@ -17,7 +18,8 @@ def main():
     report_generator = ReportGenerator()
 
     logging.debug("Getting config")
-    website_config = config_provider.provide("test_config.json")
+    jasonFileName = parsing()
+    website_config = config_provider.provide(jasonFileName)
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     driver.get(website_config.url)
 

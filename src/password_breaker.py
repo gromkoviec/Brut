@@ -8,14 +8,15 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
+from src.dir_constans import PASS_DIR
 from src.website_config import WebsiteConfig
 
 
 class PasswordBreaker:
 
     def get_password_list(self, password_file_path: str) -> List[str]:
-        allowed_extensions = [".txt", ".json"]
-        pass_dir = "passwords"
+        allowed_extensions = [".txt"]
+        pass_dir = PASS_DIR
         file_path = password_file_path
         if not exists(file_path):
             for extension in allowed_extensions:

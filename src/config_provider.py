@@ -1,6 +1,7 @@
 import json
 from os.path import exists, join
 
+from src.dir_constans import CONFIG_DIR
 from src.website_config import WebsiteConfig
 
 
@@ -17,7 +18,7 @@ class ConfigProvider:
 class FileConfigProvider(ConfigProvider):
     def provide(self, path):
         file_path = path
-        config_dir = "configs"
+        config_dir = CONFIG_DIR
         if not exists(path):
             if exists(join(config_dir, path)):
                 file_path = join(config_dir, path)
@@ -42,7 +43,7 @@ class TerminalConfigProvider(ConfigProvider):
         submit_button_selector = self.get_submit_button_selector()
         return WebsiteConfig(url=url,
                              login_username=login_username,
-                             passwords_file_path=passwords_file_path,
+                             passwords_file_name=passwords_file_path,
                              username_selector=username_selector,
                              password_selector=password_selector,
                              submit_button_selector=submit_button_selector)

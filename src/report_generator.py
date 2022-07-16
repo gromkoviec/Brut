@@ -3,6 +3,7 @@ import json
 import os
 from datetime import datetime
 
+from src.dir_constans import REPORTS_DIR
 from src.website_config import WebsiteConfig
 
 
@@ -15,7 +16,7 @@ class Report:
 
 class ReportGenerator:
     def generate_report(self, password, website_config, breaking_duration) -> None:
-        reports_dir = "reports"
+        reports_dir = REPORTS_DIR
         timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S%z")
 
         if password == "":
